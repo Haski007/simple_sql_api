@@ -14,7 +14,7 @@ var DB *sql.DB
 // Init Create DB variable to use SQL
 func Init() {
 	var err error
-	DB, err = sql.Open("mysql", "demian:Zak-Efron123@tcp(" + conf.Host + ":3306)/")
+	DB, err = sql.Open("mysql", conf.DatabaseUser + ":" + conf.DatabasePsw + "@tcp(" + conf.Host + conf.DatabasePort + ")/")
 	if err != nil {
 		log.Println(err)
 		os.Exit(-1)
@@ -26,7 +26,7 @@ func Init() {
          os.Exit(-1)
 	}
 
-	DB, err = sql.Open("mysql", "demian:Zak-Efron123@tcp(" + conf.Host + ":3306)/" + conf.DatabaseName)
+	DB, err = sql.Open("mysql", conf.DatabaseUser + ":" + conf.DatabasePsw + "@tcp(" + conf.Host + conf.DatabasePort + ")/" + conf.DatabaseName)
 	if err != nil {
 		log.Println(err)
 		os.Exit(-1)
@@ -39,7 +39,7 @@ func Init() {
 
 func createDatabase() error {
 	if _, err := DB.Exec("USE " + conf.DatabaseName); err != nil {
-			_, err = DB.Exec("CREATE DATABASE quests")
+			_, err = DB.Exec("CREATE DATABASE " + conf.DatabaseName)
 			return err
 	}
 	return nil
