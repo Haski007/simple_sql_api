@@ -1,5 +1,8 @@
 package conf3
 
+// Host ...
+var Host = "localhost"
+
 // DefaultPort uses if custom port isn't set
 var DefaultPort = ":8080"
 

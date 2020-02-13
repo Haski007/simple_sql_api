@@ -21,7 +21,7 @@ run:
 	./$(BINARY_NAME)
 # deps:
 # 	$(GOGET) github.com/markbates/goth
-# 	$(GOGET) github.com/markbates/pop
+	$(GOGET) github.com/go-sql-driver/mysql
 
 
 # Cross compilation

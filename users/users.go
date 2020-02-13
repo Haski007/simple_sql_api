@@ -7,7 +7,10 @@ import (
 	"log"
 	"os"
 	conf "../conf"
+	"../database"
 )
+
+
 
 type user struct {
 	ID              uint64 `json:"Id"`
@@ -39,7 +42,46 @@ func Init(fileName string) {
 // InitSQL takes name of .json file with users
 // and fills DataBase by that data
 func initSQL(fileName string) {
+	fmt.Println("Starting encode...")
 
+	jsonFile, err := os.Open(fileName)
+	if err != nil {
+		log.Println(err)
+		os.Exit(-1)
+	}
+	defer jsonFile.Close()
+
+	bytes, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		log.Println(err)
+		os.Exit(-1)
+	}
+
+	var users []user
+	json.Unmarshal(bytes, &users)
+
+	stmt, err := database.DB.Prepare("INSERT INTO users (id, user_name, full_name, city, birth_date, departament, gender, experience_years) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+	if err != nil {
+		log.Println(err)
+		os.Exit(-1)
+	}
+	for _, user := range users {
+		_, err = stmt.Exec(
+			user.ID,
+			user.UserName,
+			user.FullName,
+			user.City,
+			user.BirthDate,
+			user.Departament,
+			user.Gender,
+			user.ExperienceYears)
+		if err != nil {
+			log.Println(err)
+			os.Exit(-1)
+		}
+	}
+
+	fmt.Println("Table has been filled!")
 }
 
 // InitCache takes name of .json file with users
