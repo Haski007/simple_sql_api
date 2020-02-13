@@ -1,13 +1,13 @@
 package users
 
 import (
-	conf "../conf"
+	"os"
 	"fmt"
 	"log"
-	"net/http"
-	"os"
 	"regexp"
 	"strconv"
+	"../conf"
+	"net/http"
 	"../database"
 )
 
@@ -30,11 +30,9 @@ func PrintAll(w http.ResponseWriter, r *http.Request) {
 
 		for rows.Next() {
 			var u user
-			err := rows.Scan(&u.ID,
-				&u.UserName)
+			err := rows.Scan(&u.ID, &u.UserName)
 			if err != nil {
 				log.Println(err)
-				os.Exit(-1)
 			}
 			users = append(users, u)
 		}
@@ -75,7 +73,6 @@ func PrintOne(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		row := database.DB.QueryRow("SELECT * FROM users WHERE id=?", id)
-
 		var resUser user
 		err := row.Scan(&resUser.ID,
 			&resUser.UserName,
@@ -87,7 +84,7 @@ func PrintOne(w http.ResponseWriter, r *http.Request) {
 			&resUser.ExperienceYears)
 		if err != nil {
 			log.Println(err)
-			os.Exit(-1)
+			return
 		}
 
 		fmt.Printf("%16s %v\n", "Id:", resUser.ID)

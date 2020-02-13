@@ -1,13 +1,13 @@
 package users
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
 	"os"
-	conf "../conf"
+	"fmt"
+	"log"
+	"io/ioutil"
+	"../conf"
 	"../database"
+	"encoding/json"
 )
 
 

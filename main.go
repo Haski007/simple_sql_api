@@ -1,16 +1,13 @@
 package main
 
 import (
-	"log"
-	"flag"
 	"fmt"
-	"net/http"
-	"os"
-	conf "./conf"
+	"flag"
+	"./conf"
 	"./users"
+	"net/http"
 	"./database"
 
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -19,23 +16,19 @@ func main() {
 	storage := flag.String("type", conf.DefaultStorage, "Set a type of data structure - sql/cache!")
 	flag.Parse()
 
-	//////////////////////////////////////
+	if *storage == "sql" {
 
-	var err error
-	database.DB, err = sql.Open("mysql", "demian:Zak-Efron123@tcp(" + conf.Host + ":3306)/quests")
-	if err != nil {
-		log.Println(err)
-		os.Exit(-1)
-	}
-	defer database.DB.Close()
-
-	var id uint64
-	err = database.DB.QueryRow("SELECT Id FROM users").Scan(&id)
-	if err != nil || conf.DefaultStorage == "cache" {
+		database.Init()
+		defer database.DB.Close()
+		
+		var id uint64
+		err := database.DB.QueryRow("SELECT Id FROM users").Scan(&id)
+		if err != nil {
+			users.Init(conf.UsersFile)
+		}
+	} else {
 		users.Init(conf.UsersFile)
 	}
-
-	//////////////////////////////////
 
 	conf.DefaultStorage = *storage
 
