@@ -8,10 +8,9 @@
 	--port  // to set a hosting port localhost[port]
 	--type // to set type of storage (cache/sql)
 
-###Configuration file
-* #####conf.go file path: `conf/conf.go`
-
-###GOLANG
+### Configuration file
+* conf.go file path: `conf/conf.go`
+### GOLANG
 ```
 // Host ...
 var Host = "localhost"
