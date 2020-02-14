@@ -3,14 +3,14 @@
 * Enter `make` at project folder to compile a binary `quests`
 
 ### To run a program type `./quests [OPTIONS]`
-####Options
+#### Options
 
 	--port  // to set a hosting port localhost[port]
 	--type // to set type of storage (cache/sql)
 
 ### Configuration file
 * conf.go file path: `conf/conf.go`
-### GOLANG
+### GOLANG *conf.go
 ```
 // Host ...
 var Host = "localhost"
